@@ -1,4 +1,5 @@
 use crate::archive::archive_files;
+use crate::extract::extract_files;
 
 mod archive;
 mod cli;
@@ -12,13 +13,7 @@ fn main() {
     match run() {
         Ok(files_processed) => println!("{} Files Processed!", files_processed),
         Err(e) => {
-            eprintln!("Error: {}", match e {
-                error::MtarError::Usage(e)   => format!("Bad Usage! {e}"),
-                error::MtarError::Archive(e) => format!("Archive Error: {e}"),
-                error::MtarError::File(e)    => format!("File Error: {e}"),
-                error::MtarError::Extract(e) => format!("Extract Error: {e}"),
-                error::MtarError::Thread(e)  => format!("Thread Error: {e}"),
-            });
+            handle_error(e);
         }
     }
 }
@@ -32,6 +27,21 @@ fn run() -> Result<u32, error::MtarError>{
             {
                 Ok(archive_files(archive, files)?)
             }
-        _ => Ok(0)
+        cli::AppFunction::Extract {archive} =>
+            {
+                Ok(extract_files(archive)?)
+            }
     }
 }
+
+fn handle_error(e: error::MtarError) {
+    eprintln!("Error: {}", match e {
+        error::MtarError::Usage(e)   => format!("Bad Usage! {e}"),
+        error::MtarError::Archive(e) => format!("Archive Error: {e}"),
+        error::MtarError::File(e)    => format!("File Error: {e}"),
+        error::MtarError::Extract(e) => format!("Extract Error: {e}"),
+        error::MtarError::Thread(e)  => format!("Thread Error: {e}"),
+    });
+}
+
+

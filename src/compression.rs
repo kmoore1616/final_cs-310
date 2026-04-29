@@ -1,7 +1,8 @@
 use std::fmt::format;
 use flate2::Compression;
 use flate2::write::GzEncoder;
-use std::io::Write;
+use std::io::{Read, Write};
+use flate2::read::GzDecoder;
 use crate::error::MtarError;
 
 pub fn compress_data(data: &[u8]) -> Result<Vec<u8>, MtarError> {
@@ -22,4 +23,13 @@ pub fn compress_data(data: &[u8]) -> Result<Vec<u8>, MtarError> {
     };
 
     Ok(compressed_data)
+}
+
+pub fn decompress_data(data: &[u8]) -> Result<Vec<u8>, MtarError> {
+    let mut decoder = GzDecoder::new(data);
+    let mut data = Vec::new();
+    match decoder.read_to_end(&mut data) {
+        Ok(_) => Ok(data),
+        Err(e) => Err(MtarError::Extract(e.to_string())),
+    }
 }

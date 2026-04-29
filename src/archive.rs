@@ -1,9 +1,8 @@
 use crate::format::MyFile;
-use std::fs::{metadata, File};
+use std::fs::{File};
 use std::io::{Read, Write};
 use crate::error::MtarError;
 use crate::metadata;
-use crate::compression;
 use crate::compression::compress_data;
 
 pub fn archive_files(archive_name: String, names: Vec<String>) -> Result<u32, MtarError> {
@@ -48,7 +47,6 @@ pub fn write_to_archive(file: MyFile, archive_file: &mut File) -> Result<(), Mta
     println!("{:?}", compressed_data);
     write_section(&(name_bytes.len() as u64).to_le_bytes(), archive_file)?;
     write_section(name_bytes, archive_file)?;
-    write_section(&file.size.to_le_bytes(), archive_file)?;
     write_section(&(compressed_data.len() as u64).to_le_bytes(), archive_file)?;
     write_section(&compressed_data, archive_file)?;
     Ok(())

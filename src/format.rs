@@ -1,13 +1,9 @@
 use std::time::SystemTime;
-use std::fs;
-use std::fs::Permissions;
-use std::os::unix::fs::PermissionsExt;
+use std::fs::{Permissions};
 
 /*
     We have a file,
  */
-
-
 
 pub struct MyFile {
     pub name: String,
@@ -28,4 +24,3 @@ impl MyFile {
         }
     }
 }
-
