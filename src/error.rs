@@ -6,5 +6,6 @@ pub enum MtarError {
     Extract(String),
     Usage(String),
     Thread(String),
+    File(String),
 }
 
