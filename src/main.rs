@@ -9,7 +9,15 @@ mod metadata;
 fn main() {
     match run() {
         Ok(files_processed) => println!("{} Files Processed!", files_processed),
-        Err(e) => { println!("Something Failed {:?}", e) }
+        Err(e) => {
+            eprintln!("Error: {}", match e {
+                error::MtarError::Usage(e)   => format!("Bad Usage! {e}"),
+                error::MtarError::Archive(e) => format!("Archive Error: {e}"),
+                error::MtarError::File(e)    => format!("File Error: {e}"),
+                error::MtarError::Extract(e) => format!("Extract Error: {e}"),
+                error::MtarError::Thread(e)  => format!("Thread Error: {e}"),
+            });
+        }
     }
 }
 
@@ -25,14 +33,5 @@ fn run() -> Result<u32, error::MtarError>{
         _ => Ok(0)
     }
 
-    // This is the use case for the questiuon mark that just propogates the error up
-    //  let returnval = match funct {
-    //      Ok(_) => { Ok(0) },
-    //      Err(e) => { Err(e) }
-    //  };
-    //
-    // if returnval.is_err() {
-    //     return Err(returnval)
-    // }
 
 }
