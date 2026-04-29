@@ -6,6 +6,8 @@ mod error;
 mod extract;
 mod format;
 mod metadata;
+mod compression;
+
 fn main() {
     match run() {
         Ok(files_processed) => println!("{} Files Processed!", files_processed),
@@ -32,6 +34,4 @@ fn run() -> Result<u32, error::MtarError>{
             }
         _ => Ok(0)
     }
-
-
 }
