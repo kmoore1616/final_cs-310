@@ -2,7 +2,6 @@ use std::fs::File;
 use std::io::{BufReader, ErrorKind, Read, Write};
 use crate::compression::decompress_data;
 use crate::error::MtarError;
-use crate::format::MyFile;
 
 /*
     write_section(&(name_bytes.len() as u64).to_le_bytes(), archive_file)?;

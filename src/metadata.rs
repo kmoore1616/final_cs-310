@@ -5,7 +5,7 @@ use crate::error::MtarError;
 pub fn get_permissions(file:&File) -> Result<Permissions, MtarError>{
     match file.metadata() {
         Ok(metadata) => { Ok(metadata.permissions()) },
-        Err(e) => { Err(MtarError::File("Failed to get permissions".to_string())) }
+        Err(e) => { Err(MtarError::File(format!("Failed to get permissions {e}"))) }
     }
 }
 

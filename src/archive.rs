@@ -10,7 +10,9 @@ pub fn archive_files(archive_name: String, names: Vec<String>) -> Result<u32, Mt
         Ok(file) => file,
         Err(e) => return Err(MtarError::File(format!("Failed to create file{e}")))
     };
+
     let mut files_processed = 0;
+
     for file_name in names{
         let mut file =  match File::open(file_name.clone()){
             Ok(f) => f,
@@ -44,7 +46,6 @@ pub fn archive_files(archive_name: String, names: Vec<String>) -> Result<u32, Mt
 pub fn write_to_archive(file: MyFile, archive_file: &mut File) -> Result<(), MtarError> {
     let name_bytes = file.name.as_bytes();
     let compressed_data = compress_data(&file.data)?;
-    println!("{:?}", compressed_data);
     write_section(&(name_bytes.len() as u64).to_le_bytes(), archive_file)?;
     write_section(name_bytes, archive_file)?;
     write_section(&(compressed_data.len() as u64).to_le_bytes(), archive_file)?;
