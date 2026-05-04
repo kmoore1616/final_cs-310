@@ -18,6 +18,11 @@ enum Stages{
 }
  */
 
+/*
+    Extract Files: Driver that extracts files from mtar archive
+    Input: Archive name: name of mtar archive to open
+    Output: One if successful (number of mtar archive) mtar error on failure
+ */
 pub fn extract_files(archive_name: String) -> Result<u32, MtarError>{
     let archive = match File::open(archive_name.clone()){
         Ok(f) => f,
@@ -25,9 +30,14 @@ pub fn extract_files(archive_name: String) -> Result<u32, MtarError>{
     };
     decode_mtar(archive)?;
 
-    Ok(1)
+    Ok(1) // No support for multi-extract
 }
 
+/*
+    Decode Mtar: decodes a mtar archive:
+    Input: file object to write to 
+    Output: Written file on success, mtar error on failure
+ */
 pub fn decode_mtar(file: File) -> Result<(), MtarError>{
     let mut reader = BufReader::new(file);
 

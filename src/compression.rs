@@ -4,6 +4,11 @@ use std::io::{Read, Write};
 use flate2::read::GzDecoder;
 use crate::error::MtarError;
 
+/* 
+    Compress data: Function that applies compression algo to a byte array
+    Input: Byte array to compress
+    Output: Resulting compressed byte array on success, mtar error on failure
+ */
 pub fn compress_data(data: &[u8]) -> Result<Vec<u8>, MtarError> {
     let mut encoder = GzEncoder::new(Vec::new(), Compression::default());
 
@@ -24,6 +29,11 @@ pub fn compress_data(data: &[u8]) -> Result<Vec<u8>, MtarError> {
     Ok(compressed_data)
 }
 
+/* 
+    DeCompress data: Function that applies decompression algo to a byte array
+    Input: Byte array to decompress
+    Output: Resulting decompressed byte array on success, mtar error on failure
+ */
 pub fn decompress_data(data: &[u8]) -> Result<Vec<u8>, MtarError> {
     let mut decoder = GzDecoder::new(data);
     let mut data = Vec::new();

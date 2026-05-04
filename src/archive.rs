@@ -5,6 +5,11 @@ use crate::error::MtarError;
 use crate::metadata;
 use crate::compression::compress_data;
 
+/*
+Archive files: Driver for the archiving process
+Input: name of archive to write to, names of files to archive
+Output: Number of files processed on success, Mtar Error on failure
+ */
 pub fn archive_files(archive_name: String, names: Vec<String>) -> Result<u32, MtarError> {
     let mut archive_file = match File::create(archive_name) {
         Ok(file) => file,
@@ -43,6 +48,11 @@ pub fn archive_files(archive_name: String, names: Vec<String>) -> Result<u32, Mt
     Ok(files_processed)
 }
 
+/*
+    Write to archive: Breakout function that does the writing
+    Input: MyFile to write, opened file object to write to
+    Output: Nothing on success mtar error on failure
+ */
 pub fn write_to_archive(file: MyFile, archive_file: &mut File) -> Result<(), MtarError> {
     let name_bytes = file.name.as_bytes();
     let compressed_data = compress_data(&file.data)?;
@@ -53,6 +63,11 @@ pub fn write_to_archive(file: MyFile, archive_file: &mut File) -> Result<(), Mta
     Ok(())
 }
 
+/*
+    Write Section: Writes section to file
+    Input: Raw bytes to write, opened file object to write to
+    Output: Nothing on success mtar error on failure
+ */
 pub fn write_section(to_write: &[u8], archive_file: &mut File) -> Result<(), MtarError>{
     match archive_file.write_all(to_write){
         Ok(_) => Ok(()),

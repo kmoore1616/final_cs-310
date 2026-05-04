@@ -1,10 +1,11 @@
 use std::time::SystemTime;
 use std::fs::{Permissions};
 
-/*
-    We have a file,
- */
 
+/*
+    MyFile Object: 
+    Organizes all relavant information into a struct
+ */
 pub struct MyFile {
     pub name: String,
     pub permissions: Permissions,

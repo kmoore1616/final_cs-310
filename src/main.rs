@@ -41,6 +41,9 @@ fn run() -> Result<u32, error::MtarError>{
     }
 }
 
+/*
+Helper function that breaks out error handling from main 
+ */
 fn handle_error(e: error::MtarError) {
     eprintln!("Error: {}", match e {
         error::MtarError::Usage(e)   => format!("Bad Usage! {e}"),
